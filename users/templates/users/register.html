@@ -1,0 +1,19 @@
+{% extends "users/base.html" %}
+
+{% block body %}
+<h1>Register</h1>
+{% if message %}
+<div>
+  {{ message }}
+</div>
+{% endif %}
+<form action="{% url 'process_register' %}" method="post">
+  {% csrf_token %}
+  <input name="username" type="text" placeholder="Enter Username" />
+  <input name="password" type="password" placeholder="Enter Password" />
+  <input name="email" type="email" placeholder="Enter Email" />
+  <input name="firstname" type="text" placeholder="Enter First Name" />
+  <input name="lastname" type="text" placeholder="Enter Last Name" />
+  <input type="submit" value="Submit" />
+</form>
+{% endblock %}

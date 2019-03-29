@@ -3,4 +3,8 @@ from django.shortcuts import render
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Project 3: TODO")
+  context = {
+    "menu":["item1", "item2"]
+  }
+  # return render(request, "orders/index.html", context)
+  return HttpResponse("Project 3: TODO")
