@@ -1,0 +1,48 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Menu Selection
+{% endblock %}
+
+{% block body %}
+<h1>Menu Selection</h1>
+<h2>Pizza</h2>
+<form id="pizza-form" action="{% url 'addpizza' %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="pizza-qty">Quantity:</label>
+        <input type="number" value=1 name="pizza-qty" />
+    </p>
+    <p class="pizza-choice">
+        <label for="size-filter">Filter size:</label>
+        <input type="radio" name="size" value="Small"> Small
+        <input type="radio" name="size" value="Large"> Large
+    </p>
+    <p class="pizza-choice">
+        <label for="style-filter">Filter style:</label>
+        <input type="radio" name="style" value="Regular"> Regular
+        <input type="radio" name="style" value="Sicilian"> Sicilian
+    </p>
+
+    <p>
+        <select id="select-pizza">
+            {% for pizza in pizzas %}
+            <option value="{{pizza.normalize}}">{{pizza}}</option>
+            {%endfor %}
+        </select>
+    </p>
+
+    <p><label for="toppings-check">Select toppings:</label></p>
+    <section class="toppings-check">
+        {% for topping in toppings %}
+        <li>
+            <input type="checkbox" name="topping" value="topping"> {{topping}}
+        </li>
+        {% endfor %}
+    </section>
+    <p>
+        <button type="submit" >Add Pizza</button>
+    </p>
+    <form></form>
+    <hr>
+    {% endblock %}

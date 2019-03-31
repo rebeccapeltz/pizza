@@ -1,0 +1,10 @@
+.toppings-check li {
+  /* display: inline-block; */
+  list-style-type: none;
+}
+
+.toppings-check {
+  column-count: 3;
+  columns: 200px;
+  column-gap: 10px;
+}

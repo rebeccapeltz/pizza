@@ -2,6 +2,15 @@
 
 Web Programming with Python and JavaScript
 
+## Authentication
+Login at http://127.0.0.1:8000/users/
+
+Register at http://127.0.0.1:8000/users/register
+
+Logout at http://127.0.0.1:8000/users/logout
+
+
+
 
 ### Requirements
 

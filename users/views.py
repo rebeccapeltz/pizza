@@ -44,4 +44,4 @@ def process_register_view(request):
     user.save()
     return render(request, "users/login.html", {"message": "Registration complete."})
 
-#o such table: main.auth_user__old
+#no such table: main.auth_user__old
