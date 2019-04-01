@@ -3,7 +3,7 @@
   list-style-type: none;
 }
 
-.toppings-check {
+.toppings-checkboxes {
   column-count: 3;
   columns: 200px;
   column-gap: 10px;

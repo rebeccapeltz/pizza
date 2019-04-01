@@ -32,17 +32,49 @@ Menu Selection
         </select>
     </p>
 
-    <p><label for="toppings-check">Select toppings:</label></p>
-    <section class="toppings-check">
+    <div class="toppings-check">
+    <p>Select toppings:</p>
+    <section class="toppings-checkboxes">
+      
         {% for topping in toppings %}
         <li>
-            <input type="checkbox" name="topping" value="topping"> {{topping}}
+            <input type="checkbox" name="{{topping}}" value="{{topping}}"> {{topping}}
         </li>
         {% endfor %}
     </section>
+    </div>
     <p>
-        <button type="submit" >Add Pizza</button>
+        <button type="submit">Add Pizza</button>
     </p>
-    <form></form>
-    <hr>
-    {% endblock %}
+</form>
+<hr>
+<h2>Subs</h2>
+
+<form id="subs-form" action="{% url 'addsub' %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="sub-qty">Quantity:</label>
+        <input type="number" value=1 name="sub-qty" />
+    </p>
+    <p>
+        <label for="addcheese">Check to add cheese ($.50 extra)</label>
+        <input type="checkbox" name="addcheese" value="True"> {{topping}}
+    </p>
+    <p class="sub-size">
+        <label for="size-filter">Filter size:</label>
+        <input type="radio" name="size" value="Small"> Small
+        <input type="radio" name="size" value="Large"> Large
+    </p>
+    <p>
+        <select id="select-sub">
+            {% for sub in subs %}
+            <option value="{{sub.id}}">{{sub}}</option>
+            {%endfor %}
+        </select>
+    </p>
+    <p>
+        <button type="submit">Add Sub</button>
+    </p>
+</form>
+
+{% endblock %}
