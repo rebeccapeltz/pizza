@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal, ROUND_HALF_UP
+from django.conf import settings
 
 # Create your models here.
 
@@ -13,6 +14,7 @@ class PizzaMenu(models.Model):
   description = models.CharField(max_length=10)
   # price in cents
   price = models.IntegerField()
+
 
   def __str__(self):
     return f"{self.size} {self.style} Pizza: {self.description}  ${self.price_dollars()}"
@@ -87,20 +89,34 @@ class SubsMenu(models.Model):
 
 
 
-
+# this is a reference table that supplies topping strings
 class Topping(models.Model):
   description = models.CharField(max_length=25)
 
   def __str__(self):
     return f"{self.description}"
 
+# there is only one cart per customer
+# there are 0 or more items in the cart
+class Cart(models.Model):
+  #if customer deleted,  delete the cart
+  customer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+  def __str__(self):
+    # if self.CartItem_set.all() is not None:
+    #   numberOfItemsInCart = len(self.CartItem_set.all())
+    #   return f"{self.customer.last_name} #items in cart:{numberOfItemsInCart}"
+    # else:
+    return f"{self.customer.username}"
+    
+
+# access cart items from cart instance c.CartItem_set
 class CartItem(models.Model):
+  cart = models.ForeignKey(Cart, on_delete=models.CASCADE,blank=True, null=True,related_name="cart")
   quantity = models.IntegerField()
-  size = models.IntegerField()
-  style = models.CharField(max_length=8)
-  description = models.CharField(max_length=10)
-  toppings = models.CharField(max_length=50)
-  unitPrice = models.IntegerField()
+  # display = quantity <size> <style> description <toppings> @unit price_dollars total_price_dollars
+  display = models.CharField(max_length=200,null=True)
+  price = models.IntegerField()
 
   def price_dollars(self):
     return f"{Decimal(self.price/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
@@ -108,11 +124,6 @@ class CartItem(models.Model):
   def total_price_dollars(self):
     return f"{Decimal((self.price*self.quantity)/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
 
-# there is only one cart per customer
-# there are 0 or more items in the cart
-class Cart(models.Model):
-  customer = models.ForeignKey(User, on_delete=models.CASCADE,related_name="customer")
-  #TODO is there a one to many
-  cartitems = models.ManyToManyField(CartItem, blank=True, related_name="cartitems")
-
+  def __str__(self):
+    return sefl.display
 

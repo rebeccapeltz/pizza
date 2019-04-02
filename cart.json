@@ -1,0 +1,79 @@
+[{
+  "id": 1,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 2,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 3,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 4,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 5,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 8,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 9,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: small regular 2 toppings Pepperoni,Mushrooms 1@$14.70 $14.70",
+  "price": 1470
+}, {
+  "id": 10,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: small regular 2 toppings Pepperoni,Mushrooms 1@$14.70 $14.70",
+  "price": 1470
+}, {
+  "id": 11,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 12,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 13,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 14,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}, {
+  "id": 15,
+  "cart_id": 1,
+  "quantity": 1,
+  "display": "Pizza: large regular cheese 1@$17.45  $17.45",
+  "price": 1745
+}] >

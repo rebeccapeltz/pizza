@@ -1,12 +1,17 @@
 {% extends "orders/base.html" %}
 
 {% block title %}
-Menu Selection
+Cart Selections
 {% endblock %}
 
 {% block body %}
-<h1>Menu Selection</h1>
-<h2>Pizza</h2>
+<h1>Cart Selections</h1>
+
+<ul>
+{% for cart_item in cart.cart_items %}
+  <li>{{cart_item}}.display</li>>
+{%endfor %}
+</ul>
 
 <!-- {{size}}<br>
 {{style}}<br>
@@ -14,5 +19,5 @@ Menu Selection
 {{price}}<br>
 {{toppings}} -->
 
-<h2>Subs</h2>
+
 {% endblock %}
