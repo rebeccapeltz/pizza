@@ -22,7 +22,8 @@ Cart Selections
 </p>
 <ul>
   {% for cartitem in cartitems %}
-  <li>{{cartitem.display}}</li>
+  <li><a href="{% url 'cartitemdelete' cartitem.id %}">delete</a>{{cartitem.display}}</li>
+
   {%endfor %}
 </ul>
 

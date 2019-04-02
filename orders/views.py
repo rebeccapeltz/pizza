@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from .models import Topping, PizzaMenu, SubsMenu
 from .models import Cart, CartItem
 from decimal import Decimal, ROUND_HALF_UP
 from django.forms.models import model_to_dict
+from django.urls import reverse
+
 
 # import logging
 # logger = logging.getLogger(__name__)
@@ -60,7 +62,6 @@ def usercart(request):
       "cart":None,
       "cartitems":None
     }
-# Passenger.objects.exclude(flights=flight).all()
   return render(request, "orders/cart.html", context)
 
 def addpizza(request):
@@ -96,9 +97,6 @@ def addpizza(request):
       cart = c
       break 
 
-  # cart = Cart.objects.filter(customer.username == current_user.username)
-  # cart = carts.filter(customer.username == current_user.username)
-
   # create a cart item and add to cart
   if cart is None:
     cart = Cart(customer=current_user)
@@ -116,7 +114,22 @@ def addpizza(request):
 # Passenger.objects.exclude(flights=flight).all()
   return render(request, "orders/cart.html", context)
 
-# TODO deletecartitem
+# delete cart item
+def cartitemdelete(request, cartitem_id):
+  # try:
+  cart_item = None
+  cart_items = CartItem.objects.all()
+  for item in cart_items:
+    if item.id == cartitem_id:
+      cart_item = item
+      break
+  if cart_item is None:
+    return render(request,"orders/error.html", {"message":"No cart item found to delete"})
+  else:
+    cart_item.delete()
+  return HttpResponseRedirect(reverse("usercart"))
+
+
 
 # TODO place order copy cart to order and delete cart
 
