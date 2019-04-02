@@ -55,11 +55,13 @@ def usercart(request):
     all_cart_items = CartItem.objects.filter(cart=cart).all()
     context = {
       "customer":model_to_dict(customer),
+      "cart":cart.cart_total_dollars(),
       "cartitems":all_cart_items.values()
     }
   else:
     context = {
-      "cart":None,
+      "customer":None,
+      "cart":0,
       "cartitems":None
     }
   return render(request, "orders/cart.html", context)
@@ -109,9 +111,9 @@ def addpizza(request):
 
   context = {
     "customer":model_to_dict(customer),
+    "cart":cart.cart_total_dollars(),
     "cartitems":all_cart_items.values()
   }
-# Passenger.objects.exclude(flights=flight).all()
   return render(request, "orders/cart.html", context)
 
 # delete cart item

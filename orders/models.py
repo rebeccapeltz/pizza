@@ -103,11 +103,15 @@ class Cart(models.Model):
   customer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
   def __str__(self):
-    # if self.CartItem_set.all() is not None:
-    #   numberOfItemsInCart = len(self.CartItem_set.all())
-    #   return f"{self.customer.last_name} #items in cart:{numberOfItemsInCart}"
-    # else:
     return f"{self.customer.username}"
+  def cart_total_dollars(self):
+    totalCents = 0
+    all_cart_items = CartItem.objects.filter(cart=self).all()
+    for item in all_cart_items:
+      totalCents += item.price
+    return f"{Decimal(totalCents/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
+
+
     
 
 # access cart items from cart instance c.CartItem_set
@@ -127,3 +131,9 @@ class CartItem(models.Model):
   def __str__(self):
     return sefl.display
 
+class Order(models.Model):
+  #if customer deleted,  delete the cart
+  customer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  status = models.CharField(max_length=10)
+  def __str__(self):
+    return f"Order ID: {self.id} Customer: {self.customer.username}  Status: {self.status}"
