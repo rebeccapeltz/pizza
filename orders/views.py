@@ -16,7 +16,7 @@ def total_dollars(price, quantity):
   return f"{Decimal(price*quantity/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
 
 # Create your views here.
-def index(request):
+def menu(request):
   pizzas = PizzaMenu.objects.all()
   subs = SubsMenu.objects.all()
   context = {
@@ -26,12 +26,41 @@ def index(request):
     }
   # logger.info(pizzas)
   return render(request, "orders/index.html", context)
-  # return HttpResponse("Project 3: TODO")
 
+#TODO add salads
+#TODO add pasta
+#TODO add dinner platters
+
+#TODO fininsh
 def addsub(request):
   subid = request.POST["selectedsubid"]
   subObj = SubsMenu.objects.get(pk=subid)
   context = {}
+  return render(request, "orders/cart.html", context)
+
+# get current user and show their cart
+def usercart(request):
+  current_user = request.user
+  cart = None
+  for c in Cart.objects.all():
+    if c.customer.username == current_user.username:
+      print (c.customer.username)
+      cart = c
+      break
+  customer = c.customer
+  print(f"username: {customer.username}")
+  if cart is not None:
+    all_cart_items = CartItem.objects.filter(cart=cart).all()
+    context = {
+      "customer":model_to_dict(customer),
+      "cartitems":all_cart_items.values()
+    }
+  else:
+    context = {
+      "cart":None,
+      "cartitems":None
+    }
+# Passenger.objects.exclude(flights=flight).all()
   return render(request, "orders/cart.html", context)
 
 def addpizza(request):
@@ -77,21 +106,18 @@ def addpizza(request):
   # create a context with cart and cart items
   cart_item = CartItem(quantity=quantity, display=display, price=price, cart=cart)
   cart_item.save()
-
-
-
- 
-
-  # cart.user, cart.cart_items .quantity  .display . price
-  # A.objects.filter(b = b) 
-  # items = Cart.objects.filter(cart_item__customer.id = current_user.id)
   all_cart_items = CartItem.objects.filter(cart=cart).all()
-  # for item in all_cart_items:
-  #   print(f"{item.id} {item.display}")
+  customer = c.customer
+
   context = {
-    "cart":model_to_dict(cart),
-    "cart_item":all_cart_items.values()
+    "customer":model_to_dict(customer),
+    "cartitems":all_cart_items.values()
   }
 # Passenger.objects.exclude(flights=flight).all()
   return render(request, "orders/cart.html", context)
 
+# TODO deletecartitem
+
+# TODO place order copy cart to order and delete cart
+
+# TODO orders page fulfilled vs open

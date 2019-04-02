@@ -5,7 +5,17 @@ Menu Selection
 {% endblock %}
 
 {% block body %}
+<nav>
+    <ul>
+        <li>
+            <a href="{% url 'menu' %}">Menu</a>
+        </li>
+        <li> <a href="{% url 'usercart' %}">Cart</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</nav>
 <h1>Menu Selection</h1>
+
 <h2>Pizza</h2>
 <form id="pizza-form" action="{% url 'addpizza' %}" method="post">
     {% csrf_token %}
@@ -33,15 +43,15 @@ Menu Selection
     </p>
 
     <div class="toppings-check">
-    <p>Select toppings:</p>
-    <section class="toppings-checkboxes">
-      
-        {% for topping in toppings %}
-        <li>
-            <input type="checkbox" name="{{topping}}" value="{{topping}}"> {{topping}}
-        </li>
-        {% endfor %}
-    </section>
+        <p>Select toppings:</p>
+        <section class="toppings-checkboxes">
+
+            {% for topping in toppings %}
+            <li>
+                <input type="checkbox" name="{{topping}}" value="{{topping}}"> {{topping}}
+            </li>
+            {% endfor %}
+        </section>
     </div>
     <p>
         <button type="submit">Add Pizza</button>
