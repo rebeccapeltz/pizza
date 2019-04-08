@@ -5,15 +5,7 @@ Menu Selection
 {% endblock %}
 
 {% block body %}
-<nav>
-    <ul>
-        <li>
-            <a href="{% url 'menu' %}">Menu</a>
-        </li>
-        <li> <a href="{% url 'usercart' %}">Cart</a></li>
-        <li><a href="{% url 'logout' %}">Logout</a></li>
-    </ul>
-</nav>
+
 <h1>Menu Selection</h1>
 
 <h2>Pizza</h2>
@@ -35,7 +27,7 @@ Menu Selection
     </p>
 
     <p>
-        <select id="select-pizza">
+        <select class="select-css" style="width:25rem;" id="select-pizza">
             {% for pizza in pizzas %}
             <option value="{{pizza.normalize}}">{{pizza}}</option>
             {%endfor %}
@@ -76,7 +68,7 @@ Menu Selection
         <input type="radio" name="size" value="Large"> Large
     </p>
     <p>
-        <select id="select-sub">
+        <select id="select-sub" class="select-css" style="width:25rem;" >
             {% for sub in subs %}
             <option value="{{sub.id}}">{{sub}}</option>
             {%endfor %}
@@ -86,5 +78,53 @@ Menu Selection
         <button type="submit">Add Sub</button>
     </p>
 </form>
+
+<hr>
+<h2>Dinner</h2>
+
+<form id="dinner-platter-form" action="{% url 'adddinnerplatter' %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="dinnerplatter-qty">Quantity:</label>
+        <input type="number" value=1 name="dinnerplatter-qty" />
+    </p>
+    <p class="dinnerplatter-size">
+        <label for="size-filter">Filter size:</label>
+        <input type="radio" name="size" value="Small"> Small
+        <input type="radio" name="size" value="Large"> Large
+    </p>
+    <p>
+        <select id="select-dinnerplatter" class="select-css" style="width:25rem;" >
+            {% for dinnerplatter in dinnerplatters %}
+            <option value="{{dinnerplatter.id}}">{{dinnerplatter}}</option>
+            {%endfor %}
+        </select>
+    </p>
+    <p>
+        <button type="submit">Add Dinner Platter</button>
+    </p>
+</form>
+
+<hr>
+<h2>Pasta</h2>
+
+<form id="pasta-form" action="{% url 'addpasta' %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="pasta-qty">Quantity:</label>
+        <input type="number" value=1 name="pasta-qty" />
+    </p>
+    <p>
+        <select name="select-pasta" id="select-pasta" class="select-css" style="width:25rem;" >
+            {% for pasta in pastas %}
+            <option value="{{pasta.id}}">{{pasta}}</option>
+            {%endfor %}
+        </select>
+    </p>
+    <p>
+        <button type="submit">Add Pasta</button>
+    </p>
+</form>
+
 
 {% endblock %}
