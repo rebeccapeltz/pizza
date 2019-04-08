@@ -104,6 +104,7 @@ class Cart(models.Model):
 
   def __str__(self):
     return f"{self.customer.username}"
+
   def cart_total_dollars(self):
     totalCents = 0
     all_cart_items = CartItem.objects.filter(cart=self).all()
@@ -111,8 +112,6 @@ class Cart(models.Model):
       totalCents += item.price
     return f"{Decimal(totalCents/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
 
-
-    
 
 # access cart items from cart instance c.CartItem_set
 class CartItem(models.Model):

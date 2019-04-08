@@ -19,22 +19,25 @@ def total_dollars(price, quantity):
 
 # Create your views here.
 def menu(request):
-  pizzas = PizzaMenu.objects.all()
-  subs = SubsMenu.objects.all()
-  pastas = PastaMenu.objects.all()
-  dinnerplatters = DinnerPlatterMenu.objects.all()
-  salads = SaladMenu.objects.all()
-  context = {
-        "toppings": Topping.objects.all(),
-        "pizzas": pizzas,
-        "subs": subs,
-        "pastas":pastas,
-        "dinnerplatters": dinnerplatters,
-        "salads": SaladMenu,
-        "user": request.user
-    }
-  # logger.info(pizzas)
-  return render(request, "orders/index.html", context)
+  if ((request.user is not None) and (request.user.is_active == True)):
+    pizzas = PizzaMenu.objects.all()
+    subs = SubsMenu.objects.all()
+    pastas = PastaMenu.objects.all()
+    dinnerplatters = DinnerPlatterMenu.objects.all()
+    salads = SaladMenu.objects.all()
+    context = {
+          "toppings": Topping.objects.all(),
+          "pizzas": pizzas,
+          "subs": subs,
+          "pastas":pastas,
+          "dinnerplatters": dinnerplatters,
+          "salads": SaladMenu,
+          "user": request.user
+      }
+    # logger.info(pizzas)
+    return render(request, "orders/index.html", context)
+  else:
+     return render(request, 'users/login.html', {"message":"You need to login to access menu."})
 
 #TODO add salads
 def addsalad(request):
@@ -77,33 +80,39 @@ def addsub(request):
 
 # get current user and show their cart
 def usercart(request):
-  current_user = request.user
-  cart = None
-  for c in Cart.objects.all():
-    if c.customer.username == current_user.username:
-      print (c.customer.username)
-      cart = c
-      break
-  
-  
-  if cart is not None:
-    customer = cart.customer
-    print(f"username: {customer.username}")
-    all_cart_items = CartItem.objects.filter(cart=cart).all()
-    context = {
-      "customer":model_to_dict(customer),
-      "cart":cart.cart_total_dollars(),
-      "cartitems":all_cart_items.values(),
-       "user": request.user
-    }
+  if ((request.user is not None) and (request.user.is_active == True)):
+    current_user = request.user
+    cart = None
+    for c in Cart.objects.all():
+      if c.customer.username == current_user.username:
+        print (c.customer.username)
+        cart = c
+        break
+    
+    if cart is not None:
+      customer = cart.customer
+      print(f"username: {customer.username}")
+      all_cart_items = CartItem.objects.filter(cart=cart).all()
+      cartIsEmpty = (len(all_cart_items) == 0)
+      context = {
+        "customer":model_to_dict(customer),
+        "cart":cart.cart_total_dollars(),
+        "cartitems":all_cart_items.values(),
+        "cartIsEmpty": cartIsEmpty,
+        "user": request.user
+      }
+    else:
+      context = {
+        "customer":None,
+        "cart":0,
+        "cartitems":None,
+        "cartIsEmpty": True,
+        "user": request.user
+      }
+    return render(request, "orders/cart.html", context)
   else:
-    context = {
-      "customer":None,
-      "cart":0,
-      "cartitems":None,
-       "user": request.user
-    }
-  return render(request, "orders/cart.html", context)
+    return render(request, 'users/login.html', {"message":"You need to login to access cart."})
+
 
 def addpizza(request):
   size = request.POST["size"]
@@ -147,7 +156,7 @@ def addpizza(request):
   cart_item = CartItem(quantity=quantity, display=display, price=price, cart=cart)
   cart_item.save()
   all_cart_items = CartItem.objects.filter(cart=cart).all()
-  customer = c.customer
+  customer = cart.customer
 
   context = {
     "customer":model_to_dict(customer),
@@ -174,7 +183,7 @@ def cartitemdelete(request, cartitem_id):
 
 
 
-# TODO place order copy cart to order and delete cart
+# TODO checkout/place order copy cart to order and delete cart
 
 
 # TODO orders page fulfilled vs open

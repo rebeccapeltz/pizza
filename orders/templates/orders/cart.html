@@ -7,20 +7,19 @@ Cart Selections
 {% block body %}
 <h1>Cart Selections</h1>
 
-{% if cartitems is not None %}
-<!-- <h2>Username: {{customer.username}}</h2> -->
-<h3>Total: ${{cart}}</h3>
-<p>
-  <button class="action-button" id="place-order">Check out</button>
-</p>
-<ul>
-  {% for cartitem in cartitems %}
-  <li><a href="{% url 'cartitemdelete' cartitem.id %}">delete</a>{{cartitem.display}}</li>
-
-  {%endfor %}
-</ul>
+{% if cartIsEmpty == True %}
+  <p>No items in cart. </p>
+  <p>Return to Menu to add items.</p>
 {% else %}
-<p>No items in cart. </p>
-<p>Return to Menu to add items.</p>
+  <!-- <h2>Username: {{customer.username}}</h2> -->
+  <h3>Total: ${{cart}}</h3>
+  <p>
+    <button class="action-button" id="place-order">Check out</button>
+  </p>
+  <ul>
+    {% for cartitem in cartitems %}
+    <li><a href="{% url 'cartitemdelete' cartitem.id %}">delete</a>{{cartitem.display}}</li>
+    {%endfor %}
+  </ul>
 {% endif %}
 {% endblock %}

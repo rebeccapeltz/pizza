@@ -3,16 +3,24 @@
 {% block body %}
 <h1>Login</h1>
 {% if message %}
-    <div>
-        {{ message }}
-    </div>
+<div>
+    {{ message }}
+</div>
 {% endif %}
 <form action="{% url 'login' %}" method="post" autocomplete="off">
     {% csrf_token %}
-    <input name="username" type="text"/>
-    <input name="password" type="password"/>
-    <input type="submit" value="Login"/>
+    <p>
+        <label for="username">User Name</label><br>
+        <input name="username" autocomplete="new-username" type="text" />
+    </p>
+    <p>
+        <label for="password">Password</label><br>
+        <input name="password" autocomplete="new-password" type="password" /><br> 
+    </p>
+    <p>
+        <input type="submit" value="Login" />
+    </p>
 </form>
-<li><a href="{% url 'register' %}">Register</a></li>
+<p><a href="{% url 'register' %}">Register</a></p>
 
 {% endblock %}
