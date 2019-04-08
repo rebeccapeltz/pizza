@@ -60,7 +60,7 @@ Menu Selection
     </p>
     <p>
         <label for="addcheese">Check to add cheese ($.50 extra)</label>
-        <input type="checkbox" name="addcheese" value="True"> {{topping}}
+        <input type="checkbox" name="addcheese" value="True"> 
     </p>
     <p class="sub-size">
         <label for="size-filter">Filter size:</label>
@@ -68,7 +68,7 @@ Menu Selection
         <input type="radio" name="size" value="Large"> Large
     </p>
     <p>
-        <select id="select-sub" class="select-css" style="width:25rem;" >
+        <select id="select-sub" name="select-sub" class="select-css" style="width:25rem;" >
             {% for sub in subs %}
             <option value="{{sub.id}}">{{sub}}</option>
             {%endfor %}

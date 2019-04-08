@@ -72,9 +72,29 @@ def adddinnerplatters(request):
 #TODO finish
 def addsub(request):
   subid = request.POST["select-sub"]
+  quantity = int(request.POST["sub-qty"])
+  try:
+    cheese = request.POST["addcheese"]
+  except Exception:
+    cheese = False
   subObj = SubsMenu.objects.get(pk=subid)
+  price = subObj.baseprice
+  displayCheese = ''
+  if cheese == 'True':
+    price += 50
+    displayCheese = "Extra Cheese"
+  pricedollars = price_dollars(price)
+  display = f"Sub: {subObj.size} {displayCheese} {subObj.description} {quantity}@${price_dollars(price)} ${total_dollars(price,quantity)}"
+
+  cart = cartAdd(request, quantity, display, price)
+  all_cart_items = CartItem.objects.filter(cart=cart).all()
+
   context = {
-     "user": request.user
+     "customer":model_to_dict(cart.customer),
+      "cart":cart.cart_total_dollars(),
+      "cartitems":all_cart_items.values(),
+      "cartIsEmpty": (len(all_cart_items) == 0),
+      "user": request.user
   }
   return render(request, "orders/cart.html", context)
 
@@ -165,6 +185,29 @@ def addpizza(request):
      "user": request.user
   }
   return render(request, "orders/cart.html", context)
+
+# add to cart
+def cartAdd(request, quantity, display, price):
+  # get the user/customer
+  current_user = request.user
+  # see if there is a cart for the customer/create one if not
+  # cart = Cart.objects.filter( customer.id == current_user.id)
+  # get all carts
+  cart = None
+  for c in Cart.objects.all():
+    if c.customer.username == current_user.username:
+      print (c.customer.username)
+      cart = c
+      break 
+
+  # create a cart item and add to cart
+  if cart is None:
+    cart = Cart(customer=current_user)
+    cart.save()
+  # create a context with cart and cart items
+  cart_item = CartItem(quantity=quantity, display=display, price=price, cart=cart)
+  cart_item.save()
+  return cart
 
 # delete cart item
 def cartitemdelete(request, cartitem_id):

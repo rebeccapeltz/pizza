@@ -70,18 +70,18 @@ document.addEventListener("DOMContentLoaded", event => {
       this.submit()
     })
   }
-  if (document.querySelector("#subs-form")) {
-    document.querySelector("#subs-form").addEventListener("submit", function (event) {
-      event.preventDefault()
-      let selectedIndex = document.querySelector("#select-sub").selectedIndex
-      let selectedSubId = document.querySelector("#select-sub")[selectedIndex].value
-      //input should be an integer id value
-      let selectedSubIdInput = document.createElement("input")
-      selectedSubIdInput.name = "selectedsubid"
-      selectedSubIdInput.value = selectedSubId
-      this.appendChild(selectedSubIdInput)
-      this.submit()
-    })
-  }
+  // if (document.querySelector("#subs-form")) {
+  //   document.querySelector("#subs-form").addEventListener("submit", function (event) {
+  //     event.preventDefault()
+  //     let selectedIndex = document.querySelector("#select-sub").selectedIndex
+  //     let selectedSubId = document.querySelector("#select-sub")[selectedIndex].value
+  //     //input should be an integer id value
+  //     let selectedSubIdInput = document.createElement("input")
+  //     selectedSubIdInput.name = "selectedsubid"
+  //     selectedSubIdInput.value = selectedSubId
+  //     this.appendChild(selectedSubIdInput)
+  //     this.submit()
+  //   })
+  // }
 
 })
