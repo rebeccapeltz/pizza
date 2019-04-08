@@ -60,16 +60,25 @@ def addpasta(request):
 
 
 #TODO add dinner platters
-def adddinnerplatters(request):
+def adddinnerplatter(request):
   dinnerplatterid = request.POST["select-dinnerplatter"]
   dinnerPlatterObj = DinnerPlatterMenu.objects.get(pk=dinnerplatterid)
+  quantity = int(request.POST["dinnerplatter-qty"])
+  dinnerPlatterObj = DinnerPlatterMenu.objects.get(pk=dinnerplatterid)
+  price = dinnerPlatterObj.price
+  display = f"Dinner Platter: {dinnerPlatterObj.description} {quantity}@${price_dollars(price)} ${total_dollars(price,quantity)}"
+  cart = cartAdd(request, quantity, display, price)
+  all_cart_items = CartItem.objects.filter(cart=cart).all()
   context = {
-     "user": request.user
+    "customer":model_to_dict(cart.customer),
+    "cart":cart.cart_total_dollars(),
+    "cartitems":all_cart_items.values(),
+    "cartIsEmpty": (len(all_cart_items) == 0),
+    "user": request.user
   }
   return render(request, "orders/cart.html", context)
 
 
-#TODO finish
 def addsub(request):
   subid = request.POST["select-sub"]
   quantity = int(request.POST["sub-qty"])

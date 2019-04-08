@@ -80,7 +80,7 @@ Menu Selection
 </form>
 
 <hr>
-<h2>Dinner</h2>
+<h2>Dinner Platter</h2>
 
 <form id="dinner-platter-form" action="{% url 'adddinnerplatter' %}" method="post">
     {% csrf_token %}
@@ -94,7 +94,7 @@ Menu Selection
         <input type="radio" name="size" value="Large"> Large
     </p>
     <p>
-        <select id="select-dinnerplatter" class="select-css" style="width:25rem;" >
+        <select name="select-dinnerplatter" id="select-dinnerplatter" class="select-css" style="width:25rem;" >
             {% for dinnerplatter in dinnerplatters %}
             <option value="{{dinnerplatter.id}}">{{dinnerplatter}}</option>
             {%endfor %}
