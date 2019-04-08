@@ -129,11 +129,26 @@ class CartItem(models.Model):
     return f"{Decimal((self.price*self.quantity)/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
 
   def __str__(self):
-    return sefl.display
+    return self.display
 
 class Order(models.Model):
-  #if customer deleted,  delete the cart
   customer = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   status = models.CharField(max_length=10)
   def __str__(self):
     return f"Order ID: {self.id} Customer: {self.customer.username}  Status: {self.status}"
+
+class OrderItem(models.Model):
+  order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True, null=True,related_name="order")
+  quantity = models.IntegerField()
+  # display = quantity <size> <style> description <toppings> @unit price_dollars total_price_dollars
+  display = models.CharField(max_length=200,null=True)
+  price = models.IntegerField()
+
+  def price_dollars(self):
+    return f"{Decimal(self.price/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
+
+  def total_price_dollars(self):
+    return f"{Decimal((self.price*self.quantity)/100).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)}"  
+
+  def __str__(self):
+    return self.display

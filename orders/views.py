@@ -33,7 +33,7 @@ def menu(request):
 #TODO add pasta
 #TODO add dinner platters
 
-#TODO fininsh
+#TODO finish
 def addsub(request):
   subid = request.POST["selectedsubid"]
   subObj = SubsMenu.objects.get(pk=subid)
@@ -134,5 +134,6 @@ def cartitemdelete(request, cartitem_id):
 
 
 # TODO place order copy cart to order and delete cart
+
 
 # TODO orders page fulfilled vs open
