@@ -31,7 +31,7 @@ def menu(request):
           "subs": subs,
           "pastas":pastas,
           "dinnerplatters": dinnerplatters,
-          "salads": SaladMenu,
+          "salads": salads,
           "user": request.user
       }
     # logger.info(pizzas)
@@ -43,8 +43,17 @@ def menu(request):
 def addsalad(request):
   saladid = request.POST["select-salad"]
   saladObj = SaladMenu.objects.get(pk=saladid)
+  quantity = int(request.POST["salad-qty"])
+  display = f"Salds: {saladObj.description} {quantity}@${price_dollars(saladObj.price)} ${total_dollars(saladObj.price,quantity)}"
+
+  cart = cartAdd(request, quantity, display, saladObj.price)
+  all_cart_items = CartItem.objects.filter(cart=cart).all()
   context = {
-     "user": request.user
+    "customer":model_to_dict(cart.customer),
+    "cart":cart.cart_total_dollars(),
+    "cartitems":all_cart_items.values(),
+    "cartIsEmpty": (len(all_cart_items) == 0),
+    "user": request.user
   }
   return render(request, "orders/cart.html", context)
 
@@ -53,8 +62,17 @@ def addsalad(request):
 def addpasta(request):
   pastaid = request.POST["select-pasta"]
   pastaObj = PastaMenu.objects.get(pk=pastaid)
+  quantity = int(request.POST["pasta-qty"])
+  display = f"Pasta: {pastaObj.description} {quantity}@${price_dollars(pastaObj.price)} ${total_dollars(pastaObj.price,quantity)}"
+
+  cart = cartAdd(request, quantity, display, pastaObj.price)
+  all_cart_items = CartItem.objects.filter(cart=cart).all()
   context = {
-     "user": request.user
+    "customer":model_to_dict(cart.customer),
+    "cart":cart.cart_total_dollars(),
+    "cartitems":all_cart_items.values(),
+    "cartIsEmpty": (len(all_cart_items) == 0),
+    "user": request.user
   }
   return render(request, "orders/cart.html", context)
 

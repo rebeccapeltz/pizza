@@ -126,5 +126,26 @@ Menu Selection
     </p>
 </form>
 
+<hr>
+<h2>Salad</h2>
+
+<form id="salad-form" action="{% url 'addsalad' %}" method="post">
+    {% csrf_token %}
+    <p>
+        <label for="salad-qty">Quantity:</label>
+        <input type="number" value=1 name="salad-qty" />
+    </p>
+    <p>
+        <select name="select-salad" id="select-salad" class="select-css" style="width:25rem;" >
+            {% for salad in salads %}
+            <option value="{{salad.id}}">{{salad}}</option>
+            {%endfor %}
+        </select>
+    </p>
+    <p>
+        <button type="submit">Add Salad</button>
+    </p>
+</form>
+
 
 {% endblock %}
