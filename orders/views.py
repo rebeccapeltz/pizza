@@ -266,7 +266,7 @@ def checkout(request):
     # if there is no cart send to error (shouldn't get here from UI)
     cartitems = None
     if cart is None:
-      return render(request, "orders/error.html", {"message":"You cannot create an order from an empty cart"})
+      return render(request, "orders/error.html", {"message":"You cannot create an order from an empty cart", "user": request.user})
 
     else:
       # get cart items
@@ -321,6 +321,52 @@ def checkout(request):
   else:
     return render(request, 'users/login.html', {"message":"You need to login to access order."})
 
+def userorder(request):
+  if ((request.user is not None) and (request.user.is_active == True)):
+    current_user = request.user
 
+    #retrieve or create an order
+    order = None
+    for o in Order.objects.all():
+      if o.customer.username == current_user.username:
+        print (o.customer.username)
+        order = o
+        break
+    
+    # if no order send to error
+    if order is None:
+      return render(request,"orders/error.html", {"message":"No cart item found to delete", "user": request.user})
+    else:
+      # provide different context for order without any items
+      # test for empty order
+      all_order_items = OrderItem.objects.filter(order=order).all()
+      orderIsEmpty = (len(all_order_items) == 0)
+
+      if orderIsEmpty:
+        context = {
+          "customer":order.customer,
+          "order_total":"$0.00",
+          "order_id":None,
+          "orderIsEmpty": True,
+          "user": request.user
+        }
+      else:
+        customer = order.customer
+        total_cents = 0
+        for item in all_order_items:
+          total_cents += (item.quantity * item.price)
+        total_order_amount_display = price_dollars(total_cents)
+        context = {
+          "customer":model_to_dict(customer),
+          "order_total":price_dollars,
+          "order_id":order.id,
+          "orderitems":all_order_items.values(),
+          "orderIsEmpty": False,
+          "user": request.user
+        }
+      return render(request, "orders/order.html", context)
+
+  else:
+    return render(request, 'users/login.html', {"message":"You need to login to access order."})
 
 # TODO orders page fulfilled vs open
