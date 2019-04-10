@@ -10,10 +10,6 @@ urlpatterns = [
     path("orders/salad/add", views.addsalad, name="addsalad"),
     path("orders/dinnerplatter/add", views.adddinnerplatter, name="adddinnerplatter"),
     path("orders/cart", views.usercart, name="usercart"),
+    path("orders/checkout", views.checkout, name="checkout"),
     path("<int:cartitem_id>/orders/cartitem/delete", views.cartitemdelete, name="cartitemdelete")
-  
 ]
-#  path("<int:flight_id>/book", views.book, name="book")
-  # path("order/cart/delete/")
-#   "{% url 'book' flight.id %}"
-# "{% url 'orders/cart/delete' cartitem.id %}"

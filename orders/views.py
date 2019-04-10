@@ -1,14 +1,11 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from .models import Topping, PizzaMenu, SubsMenu, PastaMenu, DinnerPlatterMenu, SaladMenu
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Order, OrderItem
 from decimal import Decimal, ROUND_HALF_UP
 from django.forms.models import model_to_dict
 from django.urls import reverse
 
-
-# import logging
-# logger = logging.getLogger(__name__)
 
 #helper function to integer cents into dollar string
 def price_dollars(price):
@@ -34,7 +31,6 @@ def menu(request):
           "salads": salads,
           "user": request.user
       }
-    # logger.info(pizzas)
     return render(request, "orders/index.html", context)
   else:
      return render(request, 'users/login.html', {"message":"You need to login to access menu."})
@@ -253,7 +249,78 @@ def cartitemdelete(request, cartitem_id):
 
 
 
-# TODO checkout/place order copy cart to order and delete cart
+# checkout/place order copy cart to order and delete cart
+def checkout(request):
+  # guard against non-authenticated user
+  if ((request.user is not None) and (request.user.is_active == True)):
+    current_user = request.user
+
+    # start with getting cart and it's items
+    # and for each item in cart create an order item
+    cart = None
+    for c in Cart.objects.all():
+      if c.customer.username == current_user.username:
+        print (f"creating order from cart{c.customer.username}")
+        cart = c
+        break 
+    # if there is no cart send to error (shouldn't get here from UI)
+    cartitems = None
+    if cart is None:
+      return render(request, "orders/error.html", {"message":"You cannot create an order from an empty cart"})
+
+    else:
+      # get cart items
+      cart_items = CartItem.objects.all()
+
+    #retrieve or create an order
+    order = None
+    for o in Order.objects.all():
+      if o.customer.username == current_user.username:
+        print (o.customer.username)
+        order = o
+        break
+
+    if order is None:
+      #create order
+      order = Order(customer=current_user)
+      order.save()
+
+    # add cart items to order
+    for cartitem in cart_items:
+      order_item = OrderItem(quantity=cartitem.quantity, display=cartitem.display, price=cartitem.price, order=order)
+      order_item.save()
+   
+    # test for empty order
+    orderIsEmpty = (len(cart_items) == 0)
+    
+    # provide different context for order without any items
+    if orderIsEmpty:
+      context = {
+        "customer":order.customer,
+        "order_total":"$0.00",
+        "order_id":None,
+        "orderIsEmpty": True,
+        "user": request.user
+      }
+    else:
+      customer = order.customer
+      all_order_items = OrderItem.objects.filter(order=order).all()
+      total_cents = 0
+      for item in all_order_items:
+        total_cents += item.quantity * item.price_dollars
+      total_order_amount_display = price_dollars(total_cents)
+      context = {
+        "customer":model_to_dict(customer),
+        "order_total":price_dollars,
+        "order_id":order.id,
+        "orderitems":all_order_items.values(),
+        "orderIsEmpty": False,
+        "user": request.user
+      }
+    return render(request, "orders/order.html", context)
+  else:
+    return render(request, 'users/login.html', {"message":"You need to login to access order."})
+
 
 
 # TODO orders page fulfilled vs open
