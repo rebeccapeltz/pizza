@@ -1,0 +1,30 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block body %}
+
+<h1>Admin</h1>
+<h2>List of orders: mark completed</h2>
+
+<h2>Username: {{user.username}}</h2>
+<h3>{{user.first_name}} {{user.last_name}}</h3>
+<h3>Total Sales Completed: ${{order_completed_total}}</h3>
+<h3>Total Sales Pending: ${{order_pending_total}}</h3>
+<ul class="items">
+  {% for order in orders %}
+  {% if order.status == 'complete' %}                      
+    <li>Order Complete 
+      <a href="{% url 'showorder' order.id}">order.display</a>
+    </li> 
+  {% else %}
+  <li><a href="{% url 'markcomplete' order.id %}">Mark Complete</a>
+    <a href="{% url 'showorder' order.id}">order.display</a>
+  </li> 
+  {% endif %} 
+  
+  {%endfor %}
+</ul>
+{% endblock %}

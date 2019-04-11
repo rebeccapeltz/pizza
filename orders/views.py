@@ -384,4 +384,17 @@ def userorder(request):
   else:
     return render(request, 'users/login.html', {"message":"You need to login to access order."})
 
-# TODO orders page fulfilled vs open
+# admin page where super user can mark order status complete
+def admin(request):
+  context = {}
+  #order_completed_total
+  #order_pending_total
+  #order. status, id, display
+  return render(request,"orders/admin.html",context)
+
+# show order by id from admin page
+def showorder(request, order_id):
+  print(order_id)
+
+def markcomplete(request, order_id):
+  print(order_id)
