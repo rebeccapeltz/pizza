@@ -384,12 +384,41 @@ def userorder(request):
   else:
     return render(request, 'users/login.html', {"message":"You need to login to access order."})
 
+def fullname(fname, lname, username):
+  if fname == "" and lname == "":
+    return username
+  else:
+    return fname + " " + lname
+
 # admin page where super user can mark order status complete
 def admin(request):
-  context = {}
-  #order_completed_total
-  #order_pending_total
+  orders = []
+  order_completed_total_cents = 0
+  order_pending_total_cents = 0
+
+  # get all orders and calculate completed and pending totals
+  # also prepare data for binding to template
+  orders_data = Order.objects.all()
+ 
+  for order_data in orders_data:
+    order = {
+      "id":order_data.id,
+      "customer_name":fullname(order_data.customer.first_name,order_data.customer.last_name,order_data.customer.username)
+    }
+    orders.append(order)
+    order_items_data = OrderItem.objects.filter(order=order_data).all()
+    if order_data.status == "Complete":
+      for item in order_items_data:
+        order_completed_total_cents += (item.quantity * item*price)
+    else:
+      for item in order_items_data:
+        order_pending_total_cents += (item.quantity * item.price)
+
   #order. status, id, display
+  context= {
+    "orders":orders,
+    "order_pending_total":price_dollars(order_pending_total_cents),
+    "order_completed_total":price_dollars(order_completed_total_cents)}
   return render(request,"orders/admin.html",context)
 
 # show order by id from admin page
