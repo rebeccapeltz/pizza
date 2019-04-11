@@ -32,6 +32,15 @@ nav li a{
   color: black;
 }
 
+nav li:first-child {
+  background-color:black;
+}
+nav li:first-child a{
+	background-color:black;
+	color: red;
+	font-size: 1.5rem !important;
+}
+
 .action-button{
   width: 5rem;
   height: 30px;
@@ -95,3 +104,4 @@ input[type="number"] {
 .items i {
 	margin: 0 5px;
 }
+

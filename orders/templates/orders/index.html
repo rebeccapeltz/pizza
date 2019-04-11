@@ -15,7 +15,7 @@ Menu Selection
         <label for="pizza-qty">Quantity:</label>
         <input type="number" value=1 name="pizza-qty" />
     </p>
-    <p class="pizza-choice">
+    <!-- <p class="pizza-choice">
         <label for="size-filter">Filter size:</label>
         <input type="radio" name="size" value="Small"> Small
         <input type="radio" name="size" value="Large"> Large
@@ -24,7 +24,7 @@ Menu Selection
         <label for="style-filter">Filter style:</label>
         <input type="radio" name="style" value="Regular"> Regular
         <input type="radio" name="style" value="Sicilian"> Sicilian
-    </p>
+    </p> -->
 
     <p>
         <select class="select-css" style="width:25rem;" id="select-pizza">
@@ -62,11 +62,11 @@ Menu Selection
         <label for="addcheese">Check to add cheese ($.50 extra)</label>
         <input type="checkbox" name="addcheese" value="True"> 
     </p>
-    <p class="sub-size">
+    <!-- <p class="sub-size">
         <label for="size-filter">Filter size:</label>
         <input type="radio" name="size" value="Small"> Small
         <input type="radio" name="size" value="Large"> Large
-    </p>
+    </p> -->
     <p>
         <select id="select-sub" name="select-sub" class="select-css" style="width:25rem;" >
             {% for sub in subs %}
@@ -88,11 +88,11 @@ Menu Selection
         <label for="dinnerplatter-qty">Quantity:</label>
         <input type="number" value=1 name="dinnerplatter-qty" />
     </p>
-    <p class="dinnerplatter-size">
+    <!-- <p class="dinnerplatter-size">
         <label for="size-filter">Filter size:</label>
         <input type="radio" name="size" value="Small"> Small
         <input type="radio" name="size" value="Large"> Large
-    </p>
+    </p> -->
     <p>
         <select name="select-dinnerplatter" id="select-dinnerplatter" class="select-css" style="width:25rem;" >
             {% for dinnerplatter in dinnerplatters %}

@@ -19,7 +19,7 @@ Admin
     {% for order in orders %}
     {% if order.status == 'Complete' %}                      
       <li><i class="far fa-check-square"></i>
-        <a href="{% url 'showorder' order.id}">{{order.id}}</a>{{order.customer_name}}
+        <a href="{% url 'showorder' order.id %}">{{order.id}}</a>{{order.customer_name}}
       </li> 
     {% else %}
     <li><a href="{% url 'markcomplete' order.id %}">Mark Complete</a>

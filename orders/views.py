@@ -287,8 +287,9 @@ def checkout(request):
 
     #retrieve or create an order
     order = None
+    # a user can only have one active cart and 1 not completed (open) order
     for o in Order.objects.all():
-      if o.customer.username == current_user.username:
+      if o.customer.username == current_user.username and o.status != "Complete":
         print (o.customer.username)
         order = o
         break
@@ -330,7 +331,8 @@ def checkout(request):
         "order_id":order.id,
         "orderitems":all_order_items.values(),
         "orderIsEmpty": False,
-        "user": request.user
+        "user": request.user,
+        "status": order.status
       }
     return render(request, "orders/order.html", context)
   else:
@@ -343,7 +345,7 @@ def userorder(request):
     #retrieve or create an order
     order = None
     for o in Order.objects.all():
-      if o.customer.username == current_user.username:
+      if o.customer.username == current_user.username and o.status != "Complete":
         print (o.customer.username)
         order = o
         break
@@ -377,7 +379,8 @@ def userorder(request):
           "order_id":order.id,
           "orderitems":all_order_items.values(),
           "orderIsEmpty": False,
-          "user": request.user
+          "user": request.user,
+          "status": order.status
         }
       return render(request, "orders/order.html", context)
 
@@ -444,7 +447,8 @@ def showorder(request, order_id):
       "order_id":order.id,
       "orderitems":all_order_items.values(),
       "orderIsEmpty": False,
-      "user": request.user
+      "user": request.user,
+      "status": order.status
     }
     return render(request,"orders/order.html",context)
   else:

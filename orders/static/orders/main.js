@@ -1,9 +1,4 @@
-//TODO filters for style and size
 
-//TODO only show toppings when pizza with toppings selected
-//This function looks at description to find a toppings count (n)
-//and find the first (n) of the toppings selected
-//it returns a comma separated string with all the toppings
 function getToppings(form, description) {
   let toppings = []
   let toppingsCount = 0
@@ -70,18 +65,5 @@ document.addEventListener("DOMContentLoaded", event => {
       this.submit()
     })
   }
-  // if (document.querySelector("#subs-form")) {
-  //   document.querySelector("#subs-form").addEventListener("submit", function (event) {
-  //     event.preventDefault()
-  //     let selectedIndex = document.querySelector("#select-sub").selectedIndex
-  //     let selectedSubId = document.querySelector("#select-sub")[selectedIndex].value
-  //     //input should be an integer id value
-  //     let selectedSubIdInput = document.createElement("input")
-  //     selectedSubIdInput.name = "selectedsubid"
-  //     selectedSubIdInput.value = selectedSubId
-  //     this.appendChild(selectedSubIdInput)
-  //     this.submit()
-  //   })
-  // }
 
 })
