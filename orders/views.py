@@ -404,13 +404,14 @@ def admin(request):
     for order_data in orders_data:
       order = {
         "id":order_data.id,
+        "status": order_data.status,
         "customer_name":fullname(order_data.customer.first_name,order_data.customer.last_name,order_data.customer.username)
       }
       orders.append(order)
       order_items_data = OrderItem.objects.filter(order=order_data).all()
       if order_data.status == "Complete":
         for item in order_items_data:
-          order_completed_total_cents += (item.quantity * item*price)
+          order_completed_total_cents += (item.quantity * item.price)
       else:
         for item in order_items_data:
           order_pending_total_cents += (item.quantity * item.price)
@@ -427,7 +428,8 @@ def admin(request):
 
 # show order by id from admin page
 def showorder(request, order_id):
-  print(order_id)
+  # security
+  print(f"{order_id} was requested to be shown to user {request.user}")
   if ((request.user is not None) and (request.user.is_superuser == True)):
     order = Order.objects.get(pk=order_id)
     customer = order.customer
@@ -451,3 +453,15 @@ def showorder(request, order_id):
 
 def markcomplete(request, order_id):
   print(order_id)
+  # get the order and set status to "Complete"
+   # security
+  print(f"{order_id} was requested to be shown to user {request.user}")
+  if ((request.user is not None) and (request.user.is_superuser == True)):
+    order = Order.objects.get(pk=order_id)
+    order.status = "Complete"
+    order.save()
+    return HttpResponseRedirect(reverse("admin"))
+
+  else:
+    return render(request,"orders/error.html", {"message":"You need admin rights to view a customer order page", "user": request.user})
+  
