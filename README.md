@@ -2,15 +2,40 @@
 
 Web Programming with Python and JavaScript
 
-## Authentication
-Login at http://127.0.0.1:8000/users/
+## Pizza Shop
 
-Register at http://127.0.0.1:8000/users/register
+The pizza slice in the nav bar takes you home. If you're not logged in you'll be redirected to a page where you can login or register.  
 
-Logout at http://127.0.0.1:8000/users/logout
+The user starts at the menu page and makes choices indicating quantity and product.  The choice is added to the `cart`.  There is only one active cart and when the user places the order, the items are moved to the `order`.  An order has a status and once complete a new order may be created but there is only one active order at a time. When the customer `checks out` the order is placed. Both order and Cart have icons to remove items.   
 
+The user can continue to add to their cart until they place the order and an order is updated or created with the items from the cart.    
 
+There is an admin page `admin.html` that the owner can use to see all orders and their statuses.  The owner can change the status.    
 
+The current state of the data is that there are two users: flix/peltzpeltz and becky/peltzpeltz.  `flix` is a customer with no super user rights and `becky` is a customer with superuser rights. The super user rights are needed to go to the `admin.html` page.  
+
+## Authentication and Authorization
+Login at http://127.0.0.1:8000/users/  
+Register at http://127.0.0.1:8000/users/register  
+Logout at http://127.0.0.1:8000/users/logout  
+
+## Pizza endpoints
+1. "/" View the menu  
+1. "orders/pizza/add" Process add a pizza item  
+1. "orders/subs/add" Process add a sub item  
+1. "orders/pasta/add" Process add a pasta item  
+1. "orders/salad/add" Process add a salad item  
+1. "orders/dinnerplatter/add" Process add a dinner platter item  
+1. "orders/cart" View cart  
+1. "orders/checkout" Process checkout - sumbitting order for payment (no payment process coded)  
+    
+1. "orders/userorder" View Current incompleted order   
+1. "/orders/cartitem/delete/id" Delete an item with from cart by id  
+1. "orders/orderitem/delete" Delete an item from order by id  
+1. "/orders/order/showorder" Show current order  
+1. "/orders/order/markcomplete" Admin function to mark an order complete  
+1. "orders/admin" View admin page if superuser  
+  
 
 ### Requirements
 
