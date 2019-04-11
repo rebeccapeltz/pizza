@@ -19,9 +19,9 @@ Cart Selections
     <button class="action-button" id="place-order">Check out</button>
   </p>
 </form>
-<ul>
+<ul class="items">
   {% for cartitem in cartitems %}
-  <li><a href="{% url 'cartitemdelete' cartitem.id %}">delete</a>{{cartitem.display}}</li>
+  <li><a href="{% url 'cartitemdelete' cartitem.id %}"><i class="fas fa-trash-alt"></i></a>{{cartitem.display}}</li>
   {%endfor %}
 </ul>
 {% endif %}

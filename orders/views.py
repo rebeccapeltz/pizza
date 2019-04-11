@@ -247,6 +247,19 @@ def cartitemdelete(request, cartitem_id):
     cart_item.delete()
   return HttpResponseRedirect(reverse("usercart"))
 
+def orderitemdelete(request, orderitem_id):
+  # try:
+  order_item = None
+  order_items = OrderItem.objects.all()
+  for item in order_items:
+    if item.id == orderitem_id:
+      order_item = item
+      break
+  if order_item is None:
+    return render(request,"orders/error.html", {"message":"No order item found to delete", "user": request.user})
+  else:
+    order_item.delete()
+  return HttpResponseRedirect(reverse("userorder"))
 
 
 # checkout/place order copy cart to order and delete cart
@@ -289,6 +302,8 @@ def checkout(request):
     for cartitem in cart_items:
       order_item = OrderItem(quantity=cartitem.quantity, display=cartitem.display, price=cartitem.price, order=order)
       order_item.save()
+      # remove cart item as you add to order
+      cartitem.delete()
    
     # test for empty order
     orderIsEmpty = (len(cart_items) == 0)
@@ -307,11 +322,11 @@ def checkout(request):
       all_order_items = OrderItem.objects.filter(order=order).all()
       total_cents = 0
       for item in all_order_items:
-        total_cents += item.quantity * item.price_dollars
+        total_cents += item.quantity * item.price
       total_order_amount_display = price_dollars(total_cents)
       context = {
         "customer":model_to_dict(customer),
-        "order_total":price_dollars,
+        "order_total":total_order_amount_display,
         "order_id":order.id,
         "orderitems":all_order_items.values(),
         "orderIsEmpty": False,
@@ -358,7 +373,7 @@ def userorder(request):
         total_order_amount_display = price_dollars(total_cents)
         context = {
           "customer":model_to_dict(customer),
-          "order_total":price_dollars,
+          "order_total":total_order_amount_display,
           "order_id":order.id,
           "orderitems":all_order_items.values(),
           "orderIsEmpty": False,

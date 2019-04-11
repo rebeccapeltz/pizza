@@ -88,3 +88,10 @@ input[type="number"] {
 .select-css option {
 	font-weight:normal;
 }
+
+.items li {
+	list-style-type:none;
+}
+.items i {
+	margin: 0 5px;
+}
