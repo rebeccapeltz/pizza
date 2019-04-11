@@ -392,38 +392,62 @@ def fullname(fname, lname, username):
 
 # admin page where super user can mark order status complete
 def admin(request):
-  orders = []
-  order_completed_total_cents = 0
-  order_pending_total_cents = 0
+  if ((request.user is not None) and (request.user.is_superuser == True)):
+    orders = []
+    order_completed_total_cents = 0
+    order_pending_total_cents = 0
 
-  # get all orders and calculate completed and pending totals
-  # also prepare data for binding to template
-  orders_data = Order.objects.all()
+    # get all orders and calculate completed and pending totals
+    # also prepare data for binding to template
+    orders_data = Order.objects.all()
+  
+    for order_data in orders_data:
+      order = {
+        "id":order_data.id,
+        "customer_name":fullname(order_data.customer.first_name,order_data.customer.last_name,order_data.customer.username)
+      }
+      orders.append(order)
+      order_items_data = OrderItem.objects.filter(order=order_data).all()
+      if order_data.status == "Complete":
+        for item in order_items_data:
+          order_completed_total_cents += (item.quantity * item*price)
+      else:
+        for item in order_items_data:
+          order_pending_total_cents += (item.quantity * item.price)
+
+    #order. status, id, display
+    context= {
+      "orders":orders,
+      "order_pending_total":price_dollars(order_pending_total_cents),
+      "order_completed_total":price_dollars(order_completed_total_cents)}
+    return render(request,"orders/admin.html",context)
+  else:
+    return render(request,"orders/error.html", {"message":"You need admin rights to view the admin page", "user": request.user})
  
-  for order_data in orders_data:
-    order = {
-      "id":order_data.id,
-      "customer_name":fullname(order_data.customer.first_name,order_data.customer.last_name,order_data.customer.username)
-    }
-    orders.append(order)
-    order_items_data = OrderItem.objects.filter(order=order_data).all()
-    if order_data.status == "Complete":
-      for item in order_items_data:
-        order_completed_total_cents += (item.quantity * item*price)
-    else:
-      for item in order_items_data:
-        order_pending_total_cents += (item.quantity * item.price)
-
-  #order. status, id, display
-  context= {
-    "orders":orders,
-    "order_pending_total":price_dollars(order_pending_total_cents),
-    "order_completed_total":price_dollars(order_completed_total_cents)}
-  return render(request,"orders/admin.html",context)
 
 # show order by id from admin page
 def showorder(request, order_id):
   print(order_id)
+  if ((request.user is not None) and (request.user.is_superuser == True)):
+    order = Order.objects.get(pk=order_id)
+    customer = order.customer
+    all_order_items = OrderItem.objects.filter(order=order).all()
+    total_cents = 0
+    for item in all_order_items:
+      total_cents += item.quantity * item.price
+    total_order_amount_display = price_dollars(total_cents)
+    context = {
+      "customer":model_to_dict(customer),
+      "order_total":total_order_amount_display,
+      "order_id":order.id,
+      "orderitems":all_order_items.values(),
+      "orderIsEmpty": False,
+      "user": request.user
+    }
+    return render(request,"orders/order.html",context)
+  else:
+    return render(request,"orders/error.html", {"message":"You need admin rights to view a customer order page", "user": request.user})
+  
 
 def markcomplete(request, order_id):
   print(order_id)
