@@ -5,6 +5,19 @@ from .models import Cart, CartItem, Order, OrderItem
 from decimal import Decimal, ROUND_HALF_UP
 from django.forms.models import model_to_dict
 from django.urls import reverse
+import datetime
+
+SPECIALS = {
+    "Sunday":"Pepperoni, Onions, Black Olives, Mushrooms",
+    "Monday":"Sausage, Eggplant, Zuchinni, Onions",
+    "Tuesday":"Canadian Bacon, Pineapple, Olives, Fresh Garlic",
+    "Wednesday":"Hamburger, Spinach, Artichoke, Mushrooms",
+    "Thursday":"Pepperoni, Sausage, Hamburger, Onions",
+    "Friday":"Buffalo Chicken, Onions, Peppers, Mushrooms",
+    "Saturday":"Barbeque Chicken,Anchovies, Eggplant, Onions"}
+WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
+ 
 
 
 #helper function to integer cents into dollar string
@@ -156,6 +169,13 @@ def usercart(request):
   else:
     return render(request, 'users/login.html', {"message":"You need to login to access cart."})
 
+# The daily special provides 4 toppings based on day of week
+def getSpecialToppings():
+  now = datetime.datetime.now()
+  weekday = now.weekday()
+  day_of_week = WEEKDAYS[weekday]
+  daily_special = SPECIALS[day_of_week]
+  return daily_special
 
 def addpizza(request):
   size = request.POST["size"]
@@ -164,6 +184,11 @@ def addpizza(request):
   price = int(request.POST["price"])
   toppings = request.POST["toppings"]
   quantity = int(request.POST["pizza-qty"])
+
+  # if description includes Special get the toppings
+  if description == "special":
+    toppings = getSpecialToppings()
+
   context = {
     "size":size,
     "style":style,
