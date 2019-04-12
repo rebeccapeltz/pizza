@@ -14,10 +14,13 @@ There is an admin page `admin.html` that the owner can use to see all orders and
 
 The current state of the data is that there are two users: flix/peltzpeltz and becky/peltzpeltz.  `flix` is a customer with no super user rights and `becky` is a customer with superuser rights. The super user rights are needed to go to the `admin.html` page.  
 
-## Authentication and Authorization
-Login at http://127.0.0.1:8000/users/  
-Register at http://127.0.0.1:8000/users/register  
-Logout at http://127.0.0.1:8000/users/logout  
+## Daily Special
+The Special pizza on the menu is a daily special with a hard coded combination of 4 toppings based on the day of the week.
+
+## Authentication and Authorization endpoints
+users/ Landing page for login/register choice
+users/register Enter registration data
+users/logout Logs user out and sends to /users 
 
 ## Pizza endpoints
 1. "/" View the menu  
