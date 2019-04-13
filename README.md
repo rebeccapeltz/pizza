@@ -15,7 +15,7 @@ There is an admin page `admin.html` that the owner can use to see all orders and
 The current state of the data is that there are two users: flix/peltzpeltz and becky/peltzpeltz.  `flix` is a customer with no super user rights and `becky` is a customer with superuser rights. The super user rights are needed to go to the `admin.html` page.  
 
 ## Daily Special
-The Special pizza on the menu is a daily special with a hard coded combination of 4 toppings based on the day of the week.
+The Special pizza on the menu is a daily special with a hard coded combination of 4 toppings based on the day of the week.  You'll see the list of special toppings for the day in the Pizza menu on the home page.
 
 ## Authentication and Authorization endpoints
 users/ Landing page for login/register choice
@@ -39,6 +39,13 @@ users/logout Logs user out and sends to /users
 1. "/orders/order/markcomplete" Admin function to mark an order complete  
 1. "orders/admin" View admin page if superuser  
   
+## To use this site
+1. Clone this project
+2. Run `pip3 install -r requirements.txt` to get libraries
+3. Run `python3 manage.py runserver` to run the local server
+4. Create a super user with this command: `python3 manage.py createsuperuser`
+5. Open `http://127.0.0.1:8000/admin` and login as superuser to view and update data
+
 
 ### Requirements
 

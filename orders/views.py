@@ -35,6 +35,7 @@ def menu(request):
     pastas = PastaMenu.objects.all()
     dinnerplatters = DinnerPlatterMenu.objects.all()
     salads = SaladMenu.objects.all()
+    special_toppings = getSpecialToppings()
     context = {
           "toppings": Topping.objects.all(),
           "pizzas": pizzas,
@@ -42,7 +43,8 @@ def menu(request):
           "pastas":pastas,
           "dinnerplatters": dinnerplatters,
           "salads": salads,
-          "user": request.user
+          "user": request.user,
+          "special_toppings": special_toppings
       }
     return render(request, "orders/index.html", context)
   else:
